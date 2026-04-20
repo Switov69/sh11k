@@ -2,6 +2,7 @@ import os
 import json
 import uuid
 
+from aiogram.client.default import DefaultBotProperties
 from fastapi import FastAPI, Request, Response
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import (
@@ -18,7 +19,7 @@ ADMIN_ID: int = int(os.environ["ADMIN_ID"])
 CHANNEL_ID: str = os.environ["CHANNEL_ID"]
 REDIS_URL: str = os.environ["REDIS_URL"]
 
-bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
+bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 app = FastAPI()
 
@@ -42,14 +43,10 @@ async def cmd_start(message: Message) -> None:
 
     await message.answer(
         "👋 <b>Привет!</b>\n\n"
-        "Отправь сообщение с медиафайлами для публикации в канале.\n\n"
-        "📎 <b>Обязательные требования:</b>\n"
-        "• Подпись-описание к медиафайлам (обязательно)\n"
-        "• Ровно <b>2 фото</b> или <b>2 видео</b> одним альбомом\n\n"
-        "⚠️ <b>Лимиты Telegram:</b>\n"
-        "• Фото — до <b>10 МБ</b> каждое\n"
-        "• Видео — до <b>50 МБ</b> каждое\n\n"
-        "Выбери один тип: только фото <i>или</i> только видео."
+        "Отправьте сообщение с медиафайлами для публикации в канале.\n\n"
+        "📎 <b>Обязательно:</b>\n"
+        "• Подпись к медиафайлам\n"
+        "• <b>2 фото</b> или <b>2 видео</b> одним альбомом\n\n"
     )
 
 
