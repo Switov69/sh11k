@@ -290,12 +290,9 @@ async def reject_post(callback: CallbackQuery) -> None:
 
 @app.post("/webhook")
 async def webhook(request: Request) -> Response:
-    try:
-        data = await request.json()
-        update = Update(**data)
-        await dp.feed_update(bot=bot, update=update)
-    except Exception:
-        pass
+    data = await request.json()
+    update = Update.model_validate(data)
+    await dp.feed_update(bot=bot, update=update)
     return Response(content="ok", status_code=200)
 
 
